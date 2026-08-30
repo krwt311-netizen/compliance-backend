@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from database import SessionLocal
 from models import Scan , FieldCheck
 from  fastapi import FastAPI
 app = FastAPI()
@@ -22,6 +23,8 @@ def home():
     return {"message": "Welcome to the Scan API!"}
 @app.get("/scans")
 def get_all_scans():
+    db=SessionLocal()
+    db.query()
     return scans
 
 
