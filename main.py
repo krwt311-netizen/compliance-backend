@@ -82,8 +82,9 @@ def add_scan(scan: Scan, db:Session = Depends(get_db)):
 
 @app.put("/scans/{id}")
 def update_scan(id: int, scan: Scan, db:Session = Depends(get_db)):
-
     db_Scan = db.query(database_model.Scan).filter(database_model.Scan.id == id).first()
+    if not db_Scan:
+        raise HTTPException(status_code=404, detail="Scan not found")
     db_Scan.mrp_value = scan.mrp.value
     db_Scan.mrp_is_valid = scan.mrp.is_valid
     db_Scan.mrp_message = scan.mrp.message
@@ -108,9 +109,6 @@ def update_scan(id: int, scan: Scan, db:Session = Depends(get_db)):
     db_Scan.overall_status = scan.overall_status
     db.commit()
     db.refresh(db_Scan)
-    
-    if not db_Scan:
-     raise HTTPException(status_code=404, detail="invalid scan id")   
     return {"message": "Scan updated successfully."} 
 
 @app.delete("/scans/{id}")
@@ -121,5 +119,5 @@ def delete_scan(id: int, db:Session = Depends(get_db)):
     db.delete(db_Scan)
     db.commit()
     return {"message": "Scan deleted successfully."}
-    raise HTTPException(status_code=404, detail="unavailable")
+    
 
