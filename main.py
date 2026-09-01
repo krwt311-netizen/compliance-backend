@@ -1,5 +1,6 @@
-from fastapi import HTTPException
-from database import SessionLocal
+from fastapi import HTTPException ,Depends
+from database import SessionLocal 
+import database_model
 from models import Scan , FieldCheck
 from  fastapi import FastAPI
 app = FastAPI()
@@ -14,17 +15,28 @@ scans = [
         mfg_date=FieldCheck(value="not found", is_valid=False, message="Missing on label"),
         consumer_care=FieldCheck(value="care@xyz.com", is_valid=True, message="OK"),
         unit_of_measurement=FieldCheck(value="g", is_valid=True, message="OK"),
+        country_of_origin=FieldCheck(value="India", is_valid=True, message="OK"),
         overall_status="Non-Compliant"
-    )
+    ),
 ]
+# def get_db():
+#   db = SessionLocal ()
+#     try:
+#     yield db
+#         finally:
+#         db.close()
 
-@app.get("/")
+
+
+
+
+@app.get("/home")
 def home():
     return {"message": "Welcome to the Scan API!"}
+
 @app.get("/scans")
-def get_all_scans():
-    db=SessionLocal()
-    db.query()
+def get_all_scans(db:SessionLocal = Depends(get_db)):
+    db_
     return scans
 
 
