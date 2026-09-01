@@ -4,6 +4,7 @@ import database_model
 from models import Scan , FieldCheck
 from  fastapi import FastAPI
 from sqlalchemy.orm import Session
+from fastapi import  File, UploadFile
 app = FastAPI()
 
     
@@ -120,4 +121,6 @@ def delete_scan(id: int, db:Session = Depends(get_db)):
     db.commit()
     return {"message": "Scan deleted successfully."}
     
-
+@app.post("/upload-image")
+async def upload_image(file: UploadFile = File(...)):
+    content = await file.read()
