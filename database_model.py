@@ -26,6 +26,10 @@ class Scan(base):
    mfg_date_is_valid=Column(Boolean)
    mfg_date_message=Column(String)
 
+   expiry_date_value=Column(String)
+   expiry_date_is_valid=Column(Boolean) 
+   expiry_date_message=Column(String)
+
    consumer_care_value=Column(String)
    consumer_care_is_valid=Column(Boolean)
    consumer_care_message=Column(String)

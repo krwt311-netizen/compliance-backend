@@ -8,6 +8,7 @@ class Scan(BaseModel):
    id:int 
    mrp:FieldCheck
    net_quantity:FieldCheck
+   expiry_date: FieldCheck
    manufacturer_address: FieldCheck
    mfg_date: FieldCheck
    consumer_care: FieldCheck

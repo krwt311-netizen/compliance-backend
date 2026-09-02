@@ -25,6 +25,10 @@ def init_db():
                  mfg_date_value=s.mfg_date.value,
                  mfg_date_is_valid=s.mfg_date.is_valid,
                  mfg_date_message=s.mfg_date.message,
+
+                 expiry_date_value=s.expiry_date.value,
+                 expiry_date_is_valid=s.expiry_date.is_valid,
+                 expiry_date_message=s.expiry_date.message,
           
     
                  consumer_care_value=s.consumer_care.value,

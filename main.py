@@ -5,14 +5,26 @@ from models import Scan , FieldCheck
 from  fastapi import FastAPI
 from sqlalchemy.orm import Session
 from fastapi import  File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
-    
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+     allow_origins=["http://localhost:3000"],  # Allow the frontend URL
+    allow_credentials=True, # here comes the code for the FastAPI application that manages scans and their associated data. It includes endpoints for
+    allow_methods=["*"],  # Allow all methods here comes all mehtids 
+    allow_headers=["*"],  # Allow all headers here comes the code for the FastAPI application that manages scans and their associated data. It includes endpoints for 
+                                # retrieving, adding, updating, and deleting scans, as well as an endpoint for uploading images. 
+                                # `The application uses SQLAlchemy for database interactions and includes CORS middleware to allow requests from a specified frontend URL.
+)
+
 scans = [
     Scan(
         id=5,
         mrp=FieldCheck(value="₹99, inclusive of all taxes", is_valid=True, message="OK"),
         net_quantity=FieldCheck(value="500g", is_valid=True, message="OK"),
+        expiry_date=FieldCheck(value="not found", is_valid=True, message="Missing on label"),
         manufacturer_address=FieldCheck(value="XYZ Pvt Ltd, Delhi", is_valid=True, message="OK"),
         mfg_date=FieldCheck(value="not found", is_valid=False, message="Missing on label"),
         consumer_care=FieldCheck(value="care@xyz.com", is_valid=True, message="OK"),
@@ -62,6 +74,9 @@ def add_scan(scan: Scan, db:Session = Depends(get_db)):
         manufacturer_address_value=scan.manufacturer_address.value,
         manufacturer_address_is_valid=scan.manufacturer_address.is_valid,
         manufacturer_address_message=scan.manufacturer_address.message,
+        expiry_date_value=scan.expiry_date.value,
+        expiry_date_is_valid=scan.expiry_date.is_valid,
+        expiry_date_message=scan.expiry_date.message,
         mfg_date_value=scan.mfg_date.value,
         mfg_date_is_valid=scan.mfg_date.is_valid,
         mfg_date_message=scan.mfg_date.message,
@@ -95,6 +110,9 @@ def update_scan(id: int, scan: Scan, db:Session = Depends(get_db)):
     db_Scan.manufacturer_address_value = scan.manufacturer_address.value
     db_Scan.manufacturer_address_is_valid = scan.manufacturer_address.is_valid  
     db_Scan.manufacturer_address_message = scan.manufacturer_address.message
+    db.scan.expiry_date_value = scan.expiry_date.value
+    db.scan.expiry_date_is_valid = scan.expiry_date.is_valid
+    db.scan.expiry_date_message = scan.expiry_date.message
     db_Scan.mfg_date_value = scan.mfg_date.value
     db_Scan.mfg_date_is_valid = scan.mfg_date.is_valid
     db_Scan.mfg_date_message = scan.mfg_date.message
